@@ -32,6 +32,7 @@ class Phone(db.Model):
     number = db.Column(db.String(64))
     note = db.Column(db.VARCHAR)
 
+    user_id = db.Column(db.BigInteger, db.ForeignKey('user.id', ondelete="CASCADE"), nullable=False)
     user = db.relationship("User", backref="phone_numbers")
 
 
@@ -41,6 +42,7 @@ class Email(db.Model):
     email_address = db.Column(db.String(120))
     note = db.Column(db.VARCHAR)
 
+    user_id = db.Column(db.BigInteger, db.ForeignKey('user.id', ondelete="CASCADE"), nullable=False)
     user = db.relationship("User", backref="email_addresses")
 
 
@@ -55,4 +57,5 @@ class Addresses(db.Model):
     zip_code = db.Column(db.String(64))
     note = db.Column(db.VARCHAR)
 
+    user_id = db.Column(db.BigInteger, db.ForeignKey('user.id', ondelete="CASCADE"), nullable=False)
     user = db.relationship("User", backref="addresses")
