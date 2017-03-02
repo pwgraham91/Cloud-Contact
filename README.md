@@ -1,5 +1,5 @@
-# flask-template
-Basic Flask App To Start With
+# cloud contact
+Synchronized Address Book
 
 ## Set Up
 
@@ -15,7 +15,7 @@ Basic Flask App To Start With
 Make sure your local database is running and open it with
 `psql postgres`
 
-Create a new database with `CREATE DATABASE flask_template`
+Create a new database with `CREATE DATABASE cloud_contact`
 
 `python db_create.py`
 
