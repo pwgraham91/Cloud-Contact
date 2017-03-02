@@ -7,6 +7,7 @@ from flask import request
 from flask import session as flask_session
 from flask import url_for
 from flask_login import logout_user, login_user
+from werkzeug.security import generate_password_hash, check_password_hash
 
 from app import app, db, login_manager
 from app.models import User
@@ -31,6 +32,46 @@ def dev_login(user_id):
 def logout():
     logout_user()
     return flask.redirect(flask.url_for('index'))
+
+
+@app.route('/register', methods=['GET'])
+def register_get():
+    return flask.render_template('register.html')
+
+
+@app.route('/login_form', methods=['GET'])
+def login_get():
+    return flask.render_template('login_form.html')
+
+
+@app.route('/register', methods=['POST'])
+def register_post():
+    session = db.session
+
+    form = flask.request.form
+    user = User(
+        name=form['name'],
+        email=form['email'],
+        password=generate_password_hash(form['password'])
+    )
+    session.add(user)
+    session.commit()
+    login_user(user)
+    return redirect(url_for('index'))
+
+
+@app.route('/login_form', methods=['POST'])
+def login_post():
+    session = db.session
+    form = flask.request.form
+    user = session.query(User).filter(
+        User.email == form['email']
+    ).first()
+    if check_password_hash(user.password, form['password']):
+        login_user(user)
+        return redirect(url_for('index'))
+    else:
+        return 'wrong password'
 
 
 @app.route('/gCallback')
